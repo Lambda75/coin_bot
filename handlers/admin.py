@@ -8,6 +8,7 @@ from aiogram.fsm.context import FSMContext
 import database as db
 from states import AddVideo, AdjustCoins
 from config import ADMIN_IDS, PRIVATE_CHANNEL_ID, CHANNEL_INVITE_EXPIRE_HOURS
+from backup import send_backup_now
 
 router = Router()
 
@@ -204,6 +205,16 @@ async def adjust_coins_amount(message: Message, state: FSMContext, bot: Bot):
     except Exception:
         pass
     await state.clear()
+
+
+# ---------- Ручной бэкап базы ----------
+
+@router.message(Command("backup"))
+async def cmd_backup(message: Message, bot: Bot):
+    if not is_admin(message.from_user.id):
+        return
+    await message.answer("Отправляю копию базы данных...")
+    await send_backup_now(bot)
 
 
 # ---------- Статистика ----------
