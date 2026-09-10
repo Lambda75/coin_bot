@@ -19,6 +19,8 @@ REFERRAL_BONUS_COINS = int(os.getenv("REFERRAL_BONUS_COINS", "5"))
 
 # Цена прямого доступа в приватный канал (без коинов, отдельная покупка)
 CHANNEL_ACCESS_PRICE_KZT = int(os.getenv("CHANNEL_ACCESS_PRICE_KZT", "2000"))
+# Та же цена, но в USDT — для оплаты через CryptoBot (задай сам под текущий курс)
+CHANNEL_ACCESS_PRICE_USDT = float(os.getenv("CHANNEL_ACCESS_PRICE_USDT", "4"))
 # Сколько часов действует одноразовая ссылка-приглашение в канал после оплаты
 CHANNEL_INVITE_EXPIRE_HOURS = int(os.getenv("CHANNEL_INVITE_EXPIRE_HOURS", "24"))
 
