@@ -91,47 +91,20 @@ async def cb_referral(call: CallbackQuery, bot: Bot):
     await call.answer()
 
 
-# ---------- Каталог видео ----------
+# ---------- Случайное видео ----------
 
-@router.callback_query(F.data == "catalog")
-async def cb_catalog(call: CallbackQuery):
+@router.callback_query(F.data == "random_video")
+async def cb_random_video(call: CallbackQuery, bot: Bot):
+    import random
+
     videos = await db.list_active_videos()
     if not videos:
-        await call.message.edit_text("Пока видео нет 🙁", reply_markup=kb.main_menu())
+        await call.message.answer("Пока видео нет 🙁")
         await call.answer()
         return
-    await call.message.edit_text("🎬 Доступные видео:", reply_markup=kb.catalog_keyboard(videos))
-    await call.answer()
 
-
-@router.callback_query(F.data.startswith("video_"))
-async def cb_video_card(call: CallbackQuery):
-    video_id = int(call.data.split("_")[1])
-    video = await db.get_video(video_id)
-    if not video:
-        await call.answer("Видео не найдено", show_alert=True)
-        return
-    bought = await db.has_purchased(call.from_user.id, video_id)
-    text = (
-        f"🎬 <b>{video['title']}</b>\n\n"
-        f"{video['description'] or ''}\n\n"
-        f"Цена: <b>{video['price_coins']} коинов</b>"
-    )
-    if bought:
-        text += "\n\n✅ Уже куплено — доступ есть."
-    await call.message.edit_text(text, reply_markup=kb.video_card_keyboard(video_id, bought), parse_mode="HTML")
-    await call.answer()
-
-
-@router.callback_query(F.data.startswith("buy_"))
-async def cb_buy_video(call: CallbackQuery, bot: Bot):
-    video_id = int(call.data.split("_")[1])
-    video = await db.get_video(video_id)
-    if not video:
-        await call.answer("Видео не найдено", show_alert=True)
-        return
-
-    already = await db.has_purchased(call.from_user.id, video_id)
+    video = random.choice(videos)
+    already = await db.has_purchased(call.from_user.id, video["id"])
 
     if not already:
         balance = await db.get_balance(call.from_user.id)
@@ -141,18 +114,17 @@ async def cb_buy_video(call: CallbackQuery, bot: Bot):
                 show_alert=True,
             )
             return
-        await db.add_coins(call.from_user.id, -video["price_coins"], "purchase", note=f"video_id={video_id}")
-        await db.record_purchase(call.from_user.id, video_id)
+        await db.add_coins(call.from_user.id, -video["price_coins"], "purchase", note=f"video_id={video['id']}")
+        await db.record_purchase(call.from_user.id, video["id"])
 
-    # Выдача доступа
     if video["file_id"]:
         await bot.send_video(call.from_user.id, video["file_id"], caption=video["title"])
     elif video["channel_link"]:
         await call.message.answer(f"Вот твоя ссылка на видео:\n{video['channel_link']}")
     else:
-        await call.message.answer("Видео куплено, но ссылка не настроена — напиши администратору.")
+        await call.message.answer("Видео открыто, но ссылка не настроена — напиши администратору.")
 
-    await call.answer("Готово! ✅")
+    await call.answer("Готово! 🎲")
 
 
 # ---------- Пополнение баланса ----------
