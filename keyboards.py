@@ -5,31 +5,11 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 def main_menu() -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
     kb.button(text="💰 Баланс", callback_data="balance")
-    kb.button(text="🔥 Открыть каталог", callback_data="catalog")
+    kb.button(text="🎲 Случайное видео", callback_data="random_video")
     kb.button(text="🪙 Купить коины", callback_data="topup")
     kb.button(text="🔐 Доступ в канал", callback_data="channel_access")
     kb.button(text="👥 Реферальная ссылка", callback_data="referral")
     kb.adjust(2, 2, 1)
-    return kb.as_markup()
-
-
-def catalog_keyboard(videos) -> InlineKeyboardMarkup:
-    kb = InlineKeyboardBuilder()
-    for v in videos:
-        kb.button(text=f"{v['title']} — {v['price_coins']} коинов", callback_data=f"video_{v['id']}")
-    kb.button(text="⬅️ Назад", callback_data="menu")
-    kb.adjust(1)
-    return kb.as_markup()
-
-
-def video_card_keyboard(video_id: int, already_bought: bool) -> InlineKeyboardMarkup:
-    kb = InlineKeyboardBuilder()
-    if not already_bought:
-        kb.button(text="🔓 Купить за коины", callback_data=f"buy_{video_id}")
-    else:
-        kb.button(text="▶️ Получить доступ снова", callback_data=f"buy_{video_id}")
-    kb.button(text="⬅️ К каталогу", callback_data="catalog")
-    kb.adjust(1)
     return kb.as_markup()
 
 
