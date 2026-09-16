@@ -24,8 +24,7 @@ CHANNEL_ACCESS_PRICE_USDT = float(os.getenv("CHANNEL_ACCESS_PRICE_USDT", "4"))
 # Сколько часов действует одноразовая ссылка-приглашение в канал после оплаты
 CHANNEL_INVITE_EXPIRE_HOURS = int(os.getenv("CHANNEL_INVITE_EXPIRE_HOURS", "24"))
 
-KASPI_NUMBER = os.getenv("KASPI_NUMBER", "")
-KASPI_NAME = os.getenv("KASPI_NAME", "")
-CARD_NUMBER = os.getenv("CARD_NUMBER", "")
+FREEDOM_ACCOUNT_1 = os.getenv("FREEDOM_ACCOUNT_1", "")
+FREEDOM_ACCOUNT_2 = os.getenv("FREEDOM_ACCOUNT_2", "")
 
 DB_PATH = os.getenv("DB_PATH", "bot.db")
