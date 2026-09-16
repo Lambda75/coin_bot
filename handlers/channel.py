@@ -8,7 +8,7 @@ import keyboards as kb
 from states import ChannelAccess
 from config import (
     CHANNEL_ACCESS_PRICE_KZT, CHANNEL_ACCESS_PRICE_USDT,
-    KASPI_NUMBER, KASPI_NAME, CARD_NUMBER, ADMIN_IDS, CRYPTOBOT_TOKEN,
+    FREEDOM_ACCOUNT_1, FREEDOM_ACCOUNT_2, ADMIN_IDS, CRYPTOBOT_TOKEN,
 )
 from handlers.payment import cryptobot_request
 from handlers.admin import generate_channel_invite
@@ -19,7 +19,7 @@ router = Router()
 @router.callback_query(F.data == "channel_access")
 async def cb_channel_access(call: CallbackQuery):
     keyboard = InlineKeyboardBuilder()
-    keyboard.button(text="💳 Kaspi / карта", callback_data="channel_manual")
+    keyboard.button(text="💳 Freedom / карта", callback_data="channel_manual")
     keyboard.button(text="🪙 Крипта (CryptoBot)", callback_data="channel_crypto")
     keyboard.adjust(1)
 
@@ -38,8 +38,8 @@ async def cb_channel_access(call: CallbackQuery):
 async def cb_channel_manual(call: CallbackQuery, state: FSMContext):
     text = (
         "💳 Реквизиты для оплаты доступа в канал:\n\n"
-        f"Kaspi: {KASPI_NUMBER} ({KASPI_NAME})\n"
-        f"Карта: {CARD_NUMBER}\n\n"
+        f"Freedom Bank (счёт 1): {FREEDOM_ACCOUNT_1}\n"
+        f"Freedom Bank (счёт 2): {FREEDOM_ACCOUNT_2}\n\n"
         f"Сумма: {CHANNEL_ACCESS_PRICE_KZT} тг\n\n"
         "После оплаты пришли, пожалуйста, скриншот перевода (фото)."
     )
