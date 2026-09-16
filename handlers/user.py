@@ -7,7 +7,7 @@ import database as db
 import keyboards as kb
 from states import TopupManual
 from config import (
-    REFERRAL_BONUS_COINS, KASPI_NUMBER, KASPI_NAME, CARD_NUMBER,
+    REFERRAL_BONUS_COINS, FREEDOM_ACCOUNT_1, FREEDOM_ACCOUNT_2,
     KZT_PER_COIN, ADMIN_IDS, PRIVATE_CHANNEL_ID,
 )
 from database import STARTING_COINS
@@ -142,8 +142,8 @@ async def cb_topup(call: CallbackQuery):
 async def cb_topup_manual(call: CallbackQuery, state: FSMContext):
     text = (
         "💳 Реквизиты для пополнения:\n\n"
-        f"Kaspi: {KASPI_NUMBER} ({KASPI_NAME})\n"
-        f"Карта: {CARD_NUMBER}\n\n"
+        f"Freedom Bank (счёт 1): {FREEDOM_ACCOUNT_1}\n"
+        f"Freedom Bank (счёт 2): {FREEDOM_ACCOUNT_2}\n\n"
         f"Курс: 1 коин = {KZT_PER_COIN} тг\n\n"
         "Переведи любую сумму, затем напиши мне сумму в тенге, "
         "которую перевёл (просто числом)."
